@@ -23,6 +23,7 @@ typedef struct stack_s
 	struct stack_s *prev;
 	struct stack_s *next;
 } stack_t;
+extern stack_t *head;
 /**
  * struct instruction_s - opcode and its function
  * @opcode: the opcode
@@ -37,14 +38,14 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-
+/*in monty_handle.c*/
 void check_the_arg(int args, char *argv[]);
 void check_open_file(char *argv[]);
-void tokenize_the_current_line(char *Cu_line, int num_line);
 void check_on_chank(char *chank, int num_line);
-stack_t *add_stack(stack_t **head, const int n);
-size_t print_stack(const stack_t *h);
+/*opcode functions in opcode_0.c*/
 void push_opcode(stack_t **stack, unsigned int line_number);
+void add_stack(stack_t **head, const int n);
 void pall_opcode(stack_t **stack, unsigned int line_number);
-
+void pint_opcode(stack_t **stack, unsigned int line_number);
+void pop_opcode(stack_t **stack, unsigned int line_number);
 #endif /*MONTY_H*/
