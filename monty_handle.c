@@ -48,6 +48,9 @@ void check_on_chank(char *chank, int num_line)
 		{"pall", pall_opcode},
 		{"pint", pint_opcode},
 		{"pop", pop_opcode},
+		{"swap", swap_opcode},
+		{"add", add_opcode},
+		{"nop", nop_opcode},
 		{NULL, NULL}};
 
 	for (i = 0; arr[i].opcode; i++)
@@ -55,7 +58,9 @@ void check_on_chank(char *chank, int num_line)
 		if (strcmp(chank, arr[i].opcode) == 0)
 		{
 			idx = 1;
+			/*printf("-->>> %s\n", arr[i].opcode);*/
 			arr[i].f(&head, (unsigned int)num_line);
+			/*printf("-->>> %d\n", head->n);*/
 		}
 	}
 	if (idx == 0)

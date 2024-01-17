@@ -71,13 +71,12 @@ void add_stack(stack_t **head, const int n)
 }
 void pall_opcode(stack_t **stack, unsigned int line_number)
 {
-	unsigned int num = 0;
+	stack_t *tmp = *stack;
 
-	while (*stack)
+	while (tmp != NULL)
 	{
-		printf("%d\n", (*stack)->n);
-		*stack = (*stack)->next;
-		num++;
+		printf("%d\n", tmp->n);
+		tmp = tmp->next;
 	}
 	(void)line_number;
 }
@@ -93,5 +92,17 @@ void pint_opcode(stack_t **stack, unsigned int line_number)
 }
 void pop_opcode(stack_t **stack, unsigned int line_number)
 {
-	
+	stack_t *tmp = *stack;
+
+	if (*stack == NULL)
+	{
+		fprintf(stderr, "L%d: can't pop an empty stack", line_number);
+		exit(EXIT_FAILURE);
+	}
+	*stack = (*stack)->next;
+	if (*stack != NULL)
+	{
+		(*stack)->prev = NULL;
+	}
+	free(tmp);
 }
