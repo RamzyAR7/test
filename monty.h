@@ -38,6 +38,18 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+/**
+ * struct global_variable - Structure to hold global variables.
+ * @flag: flag
+ * @head: head
+ */
+typedef struct global_variable
+{
+	int flag;
+	stack_t *head;
+} global_t;
+extern global_t global_var;
+
 /*in monty_handle.c*/
 void free_stack(stack_t *stack);
 void check_the_arg(int args);
@@ -63,4 +75,6 @@ void pstr_opcode(stack_t **stack, unsigned int line_number);
 /*opcode functions in opcode_3.c*/
 void rotr_opcode(stack_t **stack, unsigned int line_number);
 void rotl_opcode(stack_t **stack, unsigned int line_number);
+void stack_opcode(stack_t **stack, unsigned int line_number);
+void queue_opcode(stack_t **stack, unsigned int line_number);
 #endif /*MONTY_H*/

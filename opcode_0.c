@@ -57,6 +57,7 @@ void push_opcode(stack_t **stack, unsigned int line_number)
 void add_stack(stack_t **head, const int n)
 {
 	stack_t *new;
+	stack_t *tmp;
 
 	new = malloc(sizeof(stack_t));
 	if (new == NULL)
@@ -76,9 +77,22 @@ void add_stack(stack_t **head, const int n)
 	}
 	else
 	{
-		new->next = *head;
-		(*head)->prev = new;
-		*head = new;
+		if (global_var.flag == 0)
+		{
+			new->next = *head;
+			(*head)->prev = new;
+			*head = new;
+		}
+		else if (global_var.flag == 1)
+		{
+			tmp = *head;
+			while (tmp->next != NULL)
+			{
+				tmp = tmp->next;
+			}
+			tmp->next = new;
+			new->prev = tmp;
+		}
 	}
 }
 /**

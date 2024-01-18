@@ -1,5 +1,5 @@
 #include "monty.h"
-stack_t *head = NULL;
+global_t global_var = {0, NULL};
 /**
  * main - interpreter for monty codes
  * @args: number of arguments
@@ -10,9 +10,9 @@ int main(int args, char *argv[])
 {
 	check_the_arg(args);
 	check_open_file(argv);
-	if (head != NULL)
+	if (global_var.head != NULL)
 	{
-		free_stack(head);
+		free_stack(global_var.head);
 	}
 	return (0);
 }

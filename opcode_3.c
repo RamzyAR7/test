@@ -53,3 +53,27 @@ void rotl_opcode(stack_t **stack, unsigned int line_number)
 		temp->n = replace;
 	}
 }
+/**
+ * stack_opcode - sets the format of the data to a stack (LIFO)
+ * @stack: stack
+ * @line_number: line number
+ * Return: void
+ */
+void stack_opcode(stack_t **stack, unsigned int line_number)
+{
+	(void)stack;
+	(void)line_number;
+	global_var.flag = 0;
+}
+/**
+ * queue_opcode - sets the format of the data to a queue (FIFO)
+ * @stack: stack
+ * @line_number: line number
+ * Return: void
+ */
+void queue_opcode(stack_t **stack, unsigned int line_number)
+{
+	(void)stack;
+	(void)line_number;
+	global_var.flag = 1;
+}

@@ -3,13 +3,13 @@
  * check_the_arg - check the argument
  * @args: number of arguments
  * Return: void
-*/
+ */
 void check_the_arg(int args)
 {
 	if (args != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
-		free_stack(head);
+		free_stack(global_var.head);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -34,7 +34,7 @@ void free_stack(stack_t *stack)
  * check_open_file - check open file
  * @argv: array of arguments
  * Return: void
-*/
+ */
 void check_open_file(char *argv[])
 {
 	char line[bufsize];
@@ -64,7 +64,7 @@ void check_open_file(char *argv[])
  * @chank: chank
  * @num_line: number of line
  * Return: void
-*/
+ */
 void check_on_chank(char *chank, int num_line)
 {
 	int i, idx = 0;
@@ -84,6 +84,8 @@ void check_on_chank(char *chank, int num_line)
 		{"pstr", pstr_opcode},
 		{"rotr", rotr_opcode},
 		{"rotl", rotl_opcode},
+		{"stack", stack_opcode},
+		{"queue", queue_opcode},
 		{NULL, NULL}};
 
 	for (i = 0; arr[i].opcode; i++)
@@ -91,15 +93,15 @@ void check_on_chank(char *chank, int num_line)
 		if (strcmp(chank, arr[i].opcode) == 0)
 		{
 			idx = 1;
-			arr[i].f(&head, (unsigned int)num_line);
+			arr[i].f(&global_var.head, (unsigned int)num_line);
 		}
 	}
 	if (idx == 0)
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", num_line, chank);
-		if (head != NULL)
+		if (global_var.head != NULL)
 		{
-			free_stack(head);
+			free_stack(global_var.head);
 		}
 		exit(EXIT_FAILURE);
 	}
