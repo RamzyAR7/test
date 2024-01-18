@@ -1,21 +1,40 @@
 #include "monty.h"
-
-void check_the_arg(int args, char *argv[])
+/**
+ * check_the_arg - check the argument
+ * @args: number of arguments
+ * Return: void
+*/
+void check_the_arg(int args)
 {
-	int length_of_argv;
-
 	if (args != 2)
 	{
 		fprintf(stderr, "USAGE: monty file\n");
-		exit(EXIT_FAILURE);
-	}
-	length_of_argv = strlen(argv[1]);
-	if (argv[1][length_of_argv - 1] != 'm' || argv[1][length_of_argv - 2] != '.')
-	{
-		fprintf(stderr, "USAGE: monty file\n");
+		free_stack(head);
 		exit(EXIT_FAILURE);
 	}
 }
+/**
+ * free_stack - free stack
+ * @stack: stack
+ * Return: void
+ */
+void free_stack(stack_t *stack)
+{
+	stack_t *tmp = stack;
+
+	while (stack != NULL)
+	{
+		tmp = stack;
+		stack = stack->next;
+		free(tmp);
+		tmp = NULL;
+	}
+}
+/**
+ * check_open_file - check open file
+ * @argv: array of arguments
+ * Return: void
+*/
 void check_open_file(char *argv[])
 {
 	char line[bufsize];
@@ -33,13 +52,19 @@ void check_open_file(char *argv[])
 	{
 		num_line++;
 		chank = strtok(line, " \t\n");
-		if (chank != NULL)
+		if (chank != NULL && chank[0] != '#')
 		{
 			check_on_chank(chank, num_line);
 		}
 	}
 	fclose(fp);
 }
+/**
+ * check_on_chank - check on chank
+ * @chank: chank
+ * @num_line: number of line
+ * Return: void
+*/
 void check_on_chank(char *chank, int num_line)
 {
 	int i, idx = 0;
@@ -51,6 +76,14 @@ void check_on_chank(char *chank, int num_line)
 		{"swap", swap_opcode},
 		{"add", add_opcode},
 		{"nop", nop_opcode},
+		{"sub", sub_opcode},
+		{"div", div_opcode},
+		{"mul", mul_opcode},
+		{"mod", mod_opcode},
+		{"pchar", pchar_opcode},
+		{"pstr", pstr_opcode},
+		{"rotr", rotr_opcode},
+		{"rotl", rotl_opcode},
 		{NULL, NULL}};
 
 	for (i = 0; arr[i].opcode; i++)
@@ -58,14 +91,16 @@ void check_on_chank(char *chank, int num_line)
 		if (strcmp(chank, arr[i].opcode) == 0)
 		{
 			idx = 1;
-			/*printf("-->>> %s\n", arr[i].opcode);*/
 			arr[i].f(&head, (unsigned int)num_line);
-			/*printf("-->>> %d\n", head->n);*/
 		}
 	}
 	if (idx == 0)
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", num_line, chank);
+		if (head != NULL)
+		{
+			free_stack(head);
+		}
 		exit(EXIT_FAILURE);
 	}
 }
