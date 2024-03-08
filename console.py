@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
             return
         try:
             obj = eval(args)()
-            obj.save()
+            storage.save()
             print(obj.id)
         except NameError:
             print("** class doesn't exist **")
@@ -78,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name."""
-        
+
         if args and args != "BaseModel":
             print("** class doesn't exist **")
             return

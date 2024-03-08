@@ -32,10 +32,11 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        info_dict = self.__dict__
-        info_dict['__class__'] = type(self).__name__
+        dct = {}
+        dct.update(self.__dict__)
+        dct['__class__'] = type(self).__name__
         #update formate
-        info_dict['created_at'] = self.created_at.isoformat()
-        info_dict['updated_at'] = self.updated_at.isoformat()
+        dct['created_at'] = self.created_at.isoformat()
+        dct['updated_at'] = self.updated_at.isoformat()
 
-        return info_dict
+        return dct
