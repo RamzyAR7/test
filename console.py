@@ -3,6 +3,7 @@
 this module is for console
 """
 import cmd
+import json
 from models.base_model import BaseModel
 from models import storage
 
@@ -46,7 +47,6 @@ class HBNBCommand(cmd.Cmd):
         except Exception as e:
             print(e)
 
-
     def do_destroy(self, args):
         """ Deletes an instance based on the class name and id """
         args_list = args.split()
@@ -89,7 +89,42 @@ class HBNBCommand(cmd.Cmd):
             instances_list.append(str(value))
         print(instances_list)
 
-    # def do_update(self, args):
+    def do_update(self, args):
+        """ Updates an instance based on the class name and id"""
+        args_list = args.split()
+        if not args_list:
+            print("** class name missing **")
+            return
+        try:
+            class_name = args_list[0]
+            if  not class_name == "BaseModel":
+                print("** class doesn't exist **")
+                return
+            if len(args_list) < 2:
+                print("** instance id missing **")
+                return
+            instances = storage.all()
+            instance_id = args_list[1]
+            key = class_name + "." + instance_id
+            if key not in instances:
+                print("** no instance found **")
+                return
+            if len(args_list) < 3:
+                print("** attribute name missing **")
+                return
+            if len(args_list) < 4:
+                print("** value missing **")
+                return
+            if len(args_list) > 4:
+                return
+            if args_list[2] in ["id", "created_at", "updated_at"]:
+                return
+
+            setattr(instances[key], args_list[2], json.loads(args_list[3]))
+            storage.save()
+
+        except Exception as e:
+            print(e)
 
     def emptyline(self):
         """Do nothing on empty line."""
