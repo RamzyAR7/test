@@ -4,13 +4,20 @@ this module is for console
 """
 import cmd
 import json
-from models.base_model import BaseModel
 from models import storage
+from models.base_model import BaseModel
+from models.user import User
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 
 
 class HBNBCommand(cmd.Cmd):
     """ this class is for console"""
-    #lst = ["quit", "EOF"]
+    classes = ["BaseModel", "User", "Amenity",
+               "City", "Place", "Review", "State"]
     def do_create(self, args):
         """Creates a new instance of BaseModel."""
         if not args:
@@ -31,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
             return
         try:
             class_name = args_list[0]
-            if  not class_name == "BaseModel":
+            if class_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
             if len(args_list) < 2:
@@ -55,7 +62,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         class_name = args_list[0]
-        if class_name != "BaseModel":
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         if len(args_list) < 2:
@@ -78,16 +85,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """Prints all string representation of all instances based or not on the class name."""
-
-        if args and args != "BaseModel":
-            print("** class doesn't exist **")
-            return
-
-        objs = storage.all()
-        instances_list = []
-        for value in objs.values():
-            instances_list.append(str(value))
-        print(instances_list)
+        lst = []
+        if args:
+            if args not in HBNBCommand.classes:
+                print("** class doesn't exist **")
+                return
+            objs = storage.all()
+            for value in objs.values():
+                if value.to_dict()['__class__'] == args:
+                    lst.append(str(value))
+        elif not args:
+            for value in storage.all().values():
+                lst.append(str(value))
+        print(lst)
 
     def do_update(self, args):
         """ Updates an instance based on the class name and id"""
@@ -97,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
             return
         try:
             class_name = args_list[0]
-            if  not class_name == "BaseModel":
+            if class_name not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
             if len(args_list) < 2:
@@ -114,8 +124,6 @@ class HBNBCommand(cmd.Cmd):
                 return
             if len(args_list) < 4:
                 print("** value missing **")
-                return
-            if len(args_list) > 4:
                 return
             if args_list[2] in ["id", "created_at", "updated_at"]:
                 return
