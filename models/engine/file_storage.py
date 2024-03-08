@@ -32,7 +32,7 @@ class FileStorage:
             js_dict[key] = value.to_dict()
         #from dict to file
         with open(self.__file_path, 'w', encoding='utf-8') as file:
-            json.dump(js_dict, file)
+            json.dump(js_dict, file, indent=4)
 
     def reload(self):
         #from file to dict
