@@ -119,8 +119,13 @@ class HBNBCommand(cmd.Cmd):
                 return
             if args_list[2] in ["id", "created_at", "updated_at"]:
                 return
+            attr_name = args_list[2]
+            attr_value = json.loads(args_list[3])
 
-            setattr(instances[key], args_list[2], json.loads(args_list[3]))
+            if isinstance(attr_value, str) and attr_value.isdigit():
+                attr_value = int(attr_value)
+
+            setattr(instances[key], attr_name, attr_value)
             storage.save()
 
         except Exception as e:
